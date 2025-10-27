@@ -1,0 +1,82 @@
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="row">
+    <div class="col-12">
+        <h2>Welcome to Inventory Management System</h2>
+        <p class="text-muted">Manage your inventory efficiently</p>
+    </div>
+</div>
+
+<div class="row g-3 mt-2">
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title text-primary">@ViewBag.Stats.TotalProducts</h5>
+                <p class="card-text">Total Products</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title text-warning">@ViewBag.Stats.LowStockProducts</h5>
+                <p class="card-text">Low Stock Items</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title text-danger">@ViewBag.Stats.OutOfStockProducts</h5>
+                <p class="card-text">Out of Stock</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title text-info">@ViewBag.Stats.TotalCategories</h5>
+                <p class="card-text">Categories</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-2">
+                    <div class="col-md-3">
+                        <a class="btn btn-primary w-100" asp-controller="Products" asp-action="Index">
+                            <i class="fas fa-box"></i> View Products
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a class="btn btn-success w-100" asp-controller="Products" asp-action="Create">
+                            <i class="fas fa-plus"></i> Add Product
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a class="btn btn-info w-100" asp-controller="Reports" asp-action="Index">
+                            <i class="fas fa-chart-bar"></i> View Reports
+                        </a>
+                    </div>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <div class="col-md-3">
+                            <a class="btn btn-warning w-100" asp-controller="Suppliers" asp-action="Index">
+                                <i class="fas fa-truck"></i> Manage Suppliers
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

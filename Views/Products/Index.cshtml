@@ -1,0 +1,102 @@
+@model IEnumerable<InventoryManagementSystem.Models.Product>
+@{
+	ViewData["Title"] = "Products";
+}
+
+@using InventoryManagementSystem.Models
+<div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-3">
+	<h2 class="mb-0">Products</h2>
+	<div class="d-flex gap-2 align-items-center">
+		<select id="categoryFilter" class="form-select">
+			<option value="">All categories</option>
+			@foreach (var c in (IEnumerable<Category>)ViewBag.Categories)
+			{
+				<option value="@c.Id">@c.Name</option>
+			}
+		</select>
+		<input id="productSearch" type="search" class="form-control" placeholder="Search products..." />
+		<a class="btn btn-outline-secondary" asp-action="ExportCsv">Export CSV</a>
+		<a class="btn btn-primary" asp-action="Create">Add Product</a>
+	</div>
+</div>
+
+@if (!Model.Any())
+{
+	<div class="alert alert-info">
+		No products yet. Use the "Add Product" button to get started.
+	</div>
+}
+else
+{
+	<table class="table table-hover align-middle" id="productsTable">
+		<thead class="table-light">
+			<tr>
+				<th>Name</th>
+				<th>SKU</th>
+				<th class="text-end">Price</th>
+				<th class="text-end">Stock</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model)
+			{
+				var threshold = (int)ViewBag.LowStockThreshold;
+				var stockClass = item.StockQuantity <= 0 ? "badge bg-danger" : (item.StockQuantity < threshold ? "badge bg-warning text-dark" : "badge bg-success");
+				<tr>
+					<td>
+						<strong>@item.Name</strong>
+						@if (!string.IsNullOrWhiteSpace(item.Description))
+						{
+							<div class="text-muted small">@item.Description</div>
+						}
+					</td>
+					<td>
+						@item.Sku
+						@if (item.Category != null)
+						{
+							<span class="badge text-bg-light border ms-1" data-category-id="@item.CategoryId">@item.Category.Name</span>
+						}
+					</td>
+					<td class="text-end">@item.Price.ToString("C")</td>
+					<td class="text-end"><span class="@stockClass">@item.StockQuantity</span></td>
+					<td class="text-end">
+						<a class="btn btn-sm btn-outline-secondary" asp-action="Details" asp-route-id="@item.Id">Details</a>
+						<a class="btn btn-sm btn-outline-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+						<form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline">
+							<button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this product?');">Delete</button>
+						</form>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+
+@section Scripts {
+	<script>
+		(function(){
+			const input = document.getElementById('productSearch');
+			const table = document.getElementById('productsTable');
+			const cat = document.getElementById('categoryFilter');
+			if(!input || !table || !cat) return;
+
+			function applyFilters(){
+				const term = input.value.trim().toLowerCase();
+				const catId = cat.value;
+				for (const row of table.tBodies[0].rows){
+					const text = row.innerText.toLowerCase();
+					const matchesText = text.includes(term);
+					const matchesCat = !catId || row.querySelector('[data-category-id="' + catId + '"]') !== null;
+					row.style.display = (matchesText && matchesCat) ? '' : 'none';
+				}
+			}
+
+			input.addEventListener('input', applyFilters);
+			cat.addEventListener('change', applyFilters);
+			applyFilters();
+		})();
+	</script>
+}
+
+

@@ -1,0 +1,53 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="text-center py-5">
+    <h1 class="display-4">Inventory Management System</h1>
+    <p class="lead">Streamline your inventory management with our comprehensive solution</p>
+    
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <div class="mt-4">
+            <a class="btn btn-primary btn-lg me-3" asp-controller="Dashboard" asp-action="Index">Go to Dashboard</a>
+            @if (User.IsInRole("Admin"))
+            {
+                <a class="btn btn-outline-primary btn-lg" asp-controller="Dashboard" asp-action="Admin">Admin Panel</a>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="mt-4">
+            <a class="btn btn-primary btn-lg me-3" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            <a class="btn btn-outline-primary btn-lg" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        </div>
+    }
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">Product Management</h5>
+                <p class="card-text">Add, edit, and track your products with ease.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">Supplier Tracking</h5>
+                <p class="card-text">Manage your suppliers and vendor relationships.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">Reports & Analytics</h5>
+                <p class="card-text">Get insights into your inventory performance.</p>
+            </div>
+        </div>
+    </div>
+</div>

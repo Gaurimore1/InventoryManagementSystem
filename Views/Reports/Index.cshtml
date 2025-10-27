@@ -1,0 +1,117 @@
+@{
+    ViewData["Title"] = "Reports";
+}
+
+<h2>Inventory Reports</h2>
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Stock Report</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Category</th>
+                                <th>Stock</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ViewBag.Reports.StockReport)
+                            {
+                                <tr class="@(item.StockQuantity < 5 ? "table-warning" : "")">
+                                    <td>@item.Name</td>
+                                    <td>@(item.Category?.Name ?? "No Category")</td>
+                                    <td>
+                                        <span class="badge @(item.StockQuantity == 0 ? "bg-danger" : item.StockQuantity < 5 ? "bg-warning" : "bg-success")">
+                                            @item.StockQuantity
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Low Stock Alert</h5>
+            </div>
+            <div class="card-body">
+                @if (ViewBag.Reports.LowStockReport.Count > 0)
+                {
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Stock</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in ViewBag.Reports.LowStockReport)
+                                {
+                                    <tr class="table-warning">
+                                        <td>@item.Name</td>
+                                        <td>
+                                            <span class="badge bg-warning">@item.StockQuantity</span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <p class="text-success">All products are well stocked!</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Category Breakdown</h5>
+            </div>
+            <div class="card-body">
+                @foreach (var cat in ViewBag.Reports.CategoryBreakdown)
+                {
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span>@cat.Category</span>
+                        <span class="badge bg-primary">@cat.Count</span>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Export Options</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a class="btn btn-success" asp-action="Export">
+                        <i class="fas fa-download"></i> Export CSV Report
+                    </a>
+                    <a class="btn btn-primary" asp-controller="Products" asp-action="ExportCsv">
+                        <i class="fas fa-file-csv"></i> Export Products CSV
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

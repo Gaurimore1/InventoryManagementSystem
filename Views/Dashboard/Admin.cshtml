@@ -1,0 +1,112 @@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="row">
+    <div class="col-12">
+        <h2>Admin Dashboard</h2>
+        <p class="text-muted">Complete system overview and management</p>
+    </div>
+</div>
+
+<div class="row g-3 mt-2">
+    <div class="col-md-2">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title text-primary">@ViewBag.Stats.TotalProducts</h5>
+                <p class="card-text small">Products</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title text-success">@ViewBag.Stats.TotalSuppliers</h5>
+                <p class="card-text small">Suppliers</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title text-info">@ViewBag.Stats.TotalCategories</h5>
+                <p class="card-text small">Categories</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title text-warning">@ViewBag.Stats.LowStockProducts</h5>
+                <p class="card-text small">Low Stock</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title text-danger">@ViewBag.Stats.OutOfStockProducts</h5>
+                <p class="card-text small">Out of Stock</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title text-secondary">@ViewBag.Stats.RecentProducts.Count</h5>
+                <p class="card-text small">Recent</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Recent Products</h5>
+            </div>
+            <div class="card-body">
+                @if (ViewBag.Stats.RecentProducts.Count > 0)
+                {
+                    <ul class="list-group list-group-flush">
+                        @foreach (var product in ViewBag.Stats.RecentProducts)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                @product.Name
+                                <span class="badge bg-primary rounded-pill">@product.StockQuantity</span>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p class="text-muted">No products yet.</p>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a class="btn btn-primary" asp-controller="Products" asp-action="Create">
+                        <i class="fas fa-plus"></i> Add Product
+                    </a>
+                    <a class="btn btn-success" asp-controller="Suppliers" asp-action="Create">
+                        <i class="fas fa-truck"></i> Add Supplier
+                    </a>
+                    <a class="btn btn-info" asp-controller="Categories" asp-action="Create">
+                        <i class="fas fa-tags"></i> Add Category
+                    </a>
+                    <a class="btn btn-warning" asp-controller="Reports" asp-action="Export">
+                        <i class="fas fa-download"></i> Export Report
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,41 @@
+@model IEnumerable<InventoryManagementSystem.Models.Category>
+@{
+	ViewData["Title"] = "Categories";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+	<h2>Categories</h2>
+	<a class="btn btn-primary" asp-action="Create">Add Category</a>
+</div>
+
+@if (!Model.Any())
+{
+	<div class="alert alert-info">No categories yet.</div>
+}
+else
+{
+	<table class="table table-hover">
+		<thead class="table-light">
+			<tr>
+				<th>Name</th>
+				<th>Description</th>
+				<th class="text-end"></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var c in Model)
+			{
+				<tr>
+					<td>@c.Name</td>
+					<td>@c.Description</td>
+					<td class="text-end">
+						<a class="btn btn-sm btn-outline-primary" asp-action="Edit" asp-route-id="@c.Id">Edit</a>
+						<a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-route-id="@c.Id">Delete</a>
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+
+
