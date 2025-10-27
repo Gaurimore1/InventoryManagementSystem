@@ -247,4 +247,4 @@ For issues or questions:
 
 ---
 
-**Happy Inventory Managing! 📦📊**
+
